@@ -1,0 +1,91 @@
+body{
+  background-color: #505762;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.main{
+  display: block;
+  width: 20rem;
+  margin: auto;
+  margin-top: 7em;
+
+
+}
+
+.screenDiv{
+  text-align: right;
+  background-color: #455368;
+  height:4rem;
+  color: #9da4af;
+  font-size: 2.5rem;
+  line-height: 4rem;
+  padding-right: 0.5rem;
+}
+
+.clearButton{
+  background-color: grey;
+  position: relative;
+  left:1rem;
+  top: 1rem;
+  width: 2rem;
+  height: 1.6rem;
+  line-height: 1.6rem;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 5px;
+
+}
+
+.empty{
+  background-color: #F1F1F1;
+  width: 5rem;
+  height: 5rem;
+}
+.numpad{
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-gap: 1;
+  background-color: #fafafa;
+
+  padding:0;
+}
+
+.button {
+
+  text-align: center;
+  width: 5rem;
+  height: 5rem;
+  line-height: 5rem;
+  justify-self: center;
+  font-size: 1.8rem;
+
+}
+
+
+.button:hover{
+  cursor: pointer;
+}
+
+.numButton {
+  background-color: #F1F1F1;
+}
+
+.numButton:hover{
+  background-color: #d9d9d9;
+}
+
+.operatorButton {
+  background-color: #F57F73;
+  color: #FBD3CE;
+}
+
+.operatorButton:hover{
+  background-color: #f36858;
+}
+
+
+.calculateButton {
+  background-color: green;
+}
