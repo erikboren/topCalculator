@@ -36,26 +36,31 @@ for (let i = 0; i < buttons.length; i++) {
       } else if (getState() == 2 && isOperator == true) {
         upperText.innerHTML = terms[0] + input;
         operator = input;
-      } else if (getState() == 3 && isOperator == false) {
+      }
+      else if (getState() == 3 && isOperator == false) {
         lowerText.innerHTML = lowerText.innerHTML + input;
         terms[1] = lowerText.innerHTML;
       } else if (getState() == 3 && isOperator == true) {
-
         result = calculate(terms, operator)
-        upperText.innerHTML = terms[0] + operator + terms[1];
+        upperText.innerHTML = terms[0] + operator + terms[1]+ "=";
         lowerText.innerHTML = result;
+        operator = input;
         terms[0] = result
+        terms.pop();
         if (input != '=') {
           lowerText.innerHTML = lowerText.innerHTML + input;
-          terms[1] = lowerText.innerHTML;
           operator = null;
         }
 
       } else if (getState() == 4 && isOperator == true) {
         result = calculate(terms, operator)
-        upperText.innerHTML = result + operator + terms[1] + "=";
-        lowerText.innerHTML = result + operator;
+        upperText.innerHTML = terms[0] + operator + terms[1] + "=";
+        lowerText.innerHTML = result;
         terms[0] = result;
+      } else if (getState() == 4 && isOperator == false) {
+        clear()
+        terms[0] = input
+        lowerText.innerHTML = lowerText.innerHTML + input;
       }
 
 
