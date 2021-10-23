@@ -44,19 +44,21 @@ for (let i = 0; i < buttons.length; i++) {
         result = calculate(terms, operator)
         upperText.innerHTML = terms[0] + operator + terms[1]+ "=";
         lowerText.innerHTML = result;
-        operator = input;
         terms[0] = result
-        terms.pop();
+
         if (input != '=') {
           lowerText.innerHTML = lowerText.innerHTML + input;
-          operator = null;
+          operator = input;
         }
 
       } else if (getState() == 4 && isOperator == true) {
+        if(input != "="){
+        operator = input}
         result = calculate(terms, operator)
         upperText.innerHTML = terms[0] + operator + terms[1] + "=";
         lowerText.innerHTML = result;
-        terms[0] = result;
+        terms[0] = result
+
       } else if (getState() == 4 && isOperator == false) {
         clear()
         terms[0] = input
@@ -82,7 +84,7 @@ const getState = function() {
     return 2;
   } else if (terms.length == 2 && result == null) {
     return 3;
-  } else if (result = !null) {
+  } else if (result !=null) {
     return 4;
   }
 }
