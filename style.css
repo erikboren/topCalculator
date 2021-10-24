@@ -9,7 +9,6 @@ body{
   margin: auto;
   margin-top: 7em;
 
-
 }
 
 .screenDiv{
@@ -20,20 +19,6 @@ body{
   font-size: 2.5rem;
   line-height: 4rem;
   padding-right: 0.5rem;
-}
-
-.clearButton{
-  background-color: grey;
-  position: relative;
-  left:1rem;
-  top: 1rem;
-  width: 2rem;
-  height: 1.6rem;
-  line-height: 1.6rem;
-  text-align: center;
-  border: 1px solid black;
-  border-radius: 5px;
-
 }
 
 .empty{
@@ -63,6 +48,9 @@ body{
 
 }
 
+.miscButton{
+
+}
 
 .button:hover{
   cursor: pointer;
@@ -72,7 +60,15 @@ body{
   background-color: #F1F1F1;
 }
 
+.miscButton {
+  background-color: #F1F1F1;
+}
+
 .numButton:hover{
+  background-color: #d9d9d9;
+}
+
+.miscButton:hover{
   background-color: #d9d9d9;
 }
 
@@ -81,11 +77,16 @@ body{
   color: #FBD3CE;
 }
 
+#equal {
+  background-color: #F57F73;
+  color: #FBD3CE;
+}
+
+
 .operatorButton:hover{
   background-color: #f36858;
 }
 
-
-.calculateButton {
-  background-color: green;
+#equal:hover{
+  background-color: #f36858;
 }
