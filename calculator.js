@@ -33,21 +33,28 @@ for (let i = 0; i < buttons.length; i++) {
     } else if (getState() == 2 && isOperator == true) {
       upperText.innerHTML = terms[0] + input;
       operator = input;
-    } else if (getState() == 3 && isOperator == false) {
+    }
+
+    else if (getState() == 3 && isOperator == false) {
       lowerText.innerHTML = lowerText.innerHTML + input;
       terms[1] = lowerText.innerHTML;
     } else if (getState() == 3 && isOperator == true) {
       result = calculate(terms, operator)
-      upperText.innerHTML = terms[0] + operator + terms[1] + "=";
-      lowerText.innerHTML = result;
+      operator = input;
       terms[0] = result
+      upperText.innerHTML = terms[0] + operator;
+      lowerText.innerHTML = "";
+      result = null;
+
 
       if (input != '=') {
         lowerText.innerHTML = lowerText.innerHTML + input;
         operator = input;
       }
 
-    } else if (getState() == 4 && isOperator == true) {
+    }
+
+    else if (getState() == 4 && isOperator == true) {
       if (input == "=") {
         result = calculate(terms, operator)
       }
@@ -85,13 +92,6 @@ const getState = function() {
   }
 }
 
-const clear = function() {
-  terms = []
-  operator = null;
-  upperText.innerHTML = ""
-  lowerText.innerHTML = ""
-  result = null;
-}
 
 const calculate = function() {
   term0 = Number(terms[0]);
@@ -112,13 +112,4 @@ const calculate = function() {
   }
 
   return result
-}
-
-
-const inputField = function(input) {
-
-}
-
-const displayResult = function() {
-
 }
