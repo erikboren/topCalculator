@@ -11,8 +11,9 @@ var lastButton
 var addDot = '';
 var operator
 var operatorString = ''
-var clearOnNextNumber = false
+var clearOnNextNumber = false;
 var calcLastAction = false;
+var operandStrings = [];
 
 
 for (let i = 0; i < numButtons.length; i++) {
@@ -65,8 +66,11 @@ const numberInput = function(input) {
   if (operands[activeOperand] == null) {
     operands[activeOperand] = parseFloat(input);
   } else {
-    operands[activeOperand] = parseFloat(operands[activeOperand].toString() + addDot + input.toString());
-    addDot = "";
+    if (operands[activeOperand].toString().length < 13) {
+      operands[activeOperand] = parseFloat(operands[activeOperand].toString() + addDot + input.toString());
+      addDot = "";
+    }
+
   }
   updateLowerText('numberInput')
 }
@@ -114,7 +118,10 @@ const updateLowerText = function(mode) {
       lowerTextElement.innerHTML = operands[activeOperand] + ',';
       break;
     case 'calculate':
-      lowerTextElement.innerHTML = dotToComma(checkLength(result.toString(),'sig'));
+      lowerTextElement.innerHTML = dotToComma(checkLength(result.toString(), 'sig'))
+      break;
+    case 'divByZero':
+      lowerTextElement.innerHTML = 'Error divide by 0';
       break;
     default:
       lowerTextElement.innerHTML = "";
@@ -131,8 +138,10 @@ const updateUpperText = function(mode) {
       upperTextElement.innerHTML = "";
       break;
     case 'operatorResult':
-      upperTextElement.innerHTML = operands[0].toString() + operatorString + operands[1].toString() + "=";
+      upperTextElement.innerHTML = checkLength(operands[0].toString() + operatorString + operands[1].toString() + "=", 'short');
+      break;
     default:
+      upperTextElement.innerHTML = "";
       break;
   }
 }
@@ -146,6 +155,9 @@ const clear = function() {
   updateUpperText('clear');
   operator = '';
   addDot = '';
+  clearOnNextNumber = false;
+  calcLastAction = false;
+
 }
 
 const plusMinus = function() {
@@ -171,27 +183,32 @@ const calculate = function(mode) {
   switch (mode) {
     case 'operatorInput':
       result = compute();
-      updateUpperText('operatorResult')
-      if (Number(result)) {
-        operands[0] = result
-      }
+      if (result != 'error') {
+        updateLowerText('calculate');
+        clearOnNextNumber = true;
+        calcLastAction = true;
+        if (Number(result)) {
+          updateUpperText('operatorResult')
+          operands[0] = result
+        }
 
+      }
       break;
     case 'equalInput':
-      result = compute()
-      updateUpperText('operatorResult')
-      if (Number(result)) {
-        operands[0] = result
+      result = compute();
+      if (result != 'error') {
+        updateLowerText('calculate');
+        clearOnNextNumber = true;
+        calcLastAction = true;
+        if (Number(result)) {
+          updateUpperText('operatorResult')
+          operands[0] = result
+        }
+
+        break;
       }
-      break;
   }
-
-  updateLowerText('calculate');
-  clearOnNextNumber = true;
-  calcLastAction = true;
-
 }
-
 const compute = function() {
   switch (operatorString) {
     case '+':
@@ -204,16 +221,36 @@ const compute = function() {
       return operands[0] * operands[1];
       break;
     case '÷':
-      return operands[0] / operands[1];
+      if (operands[1] == 0) {
+        updateLowerText('divByZero');
+        updateUpperText();
+        return 'error'
+      } else {
+        return operands[0] / operands[1];
+      }
+
   }
 }
 
 const checkLength = function(input, mode) {
-  switch (mode) {
-    case 'sig':
-      return parseFloat(input).toPrecision(12);
-      break;
-    case 'short':
-      return input.slice(0, 11);
+
+  if (input.length > 12) {
+    switch (mode) {
+      case 'sig':
+        return parseFloat(input).toPrecision(6);
+        break;
+      case 'short':
+        for (var i = 0; i < 2; i++) {
+          if (operands[i] > 99999 || operands[i].toString().length > 6) {
+            operandStrings[i] = operands[i].toPrecision(3);
+          } else operandStrings[i] = operands[i].toString();
+        }
+
+        return operandStrings[0] + operatorString + operandStrings[1] + "="
+        break;
+    }
+  } else {
+    return input;
   }
+
 }

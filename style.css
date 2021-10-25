@@ -5,7 +5,7 @@ body{
 
 .main{
   display: block;
-  width: 20rem;
+  width: 22rem;
   margin: auto;
   margin-top: 7em;
 
@@ -23,8 +23,8 @@ body{
 
 .empty{
   background-color: #F1F1F1;
-  width: 5rem;
-  height: 5rem;
+  width: 5.5rem;
+  height: 5.5rem;
 }
 .numpad{
   display: grid;
@@ -40,11 +40,11 @@ body{
 .button {
 
   text-align: center;
-  width: 5rem;
-  height: 5rem;
-  line-height: 5rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  line-height: 5.25rem;
   justify-self: center;
-  font-size: 1.8rem;
+  font-size: 1.98rem;
 
 }
 
