@@ -51,7 +51,7 @@ for (let i = 0; i < miscButtons.length; i++) {
         comma();
         break;
       case '=':
-        calculate('equalInput');
+        calculate();
         break;
     }
   })
@@ -91,7 +91,7 @@ const operatorInput = function(input) {
       updateLowerText('operatorInput');
       updateUpperText('operatorInput');
     } else if (activeOperand == 1) {
-      calculate('operatorInput')
+      calculate()
       operatorString = input;
     }
   }
@@ -179,36 +179,20 @@ const dotToComma = function(operandString) {
 }
 
 // calculation function
-const calculate = function(mode) {
-  switch (mode) {
-    case 'operatorInput':
-      result = compute();
-      if (result != 'error') {
-        updateLowerText('calculate');
-        clearOnNextNumber = true;
-        calcLastAction = true;
-        if (Number(result)) {
-          updateUpperText('operatorResult')
-          operands[0] = result
-        }
-
-      }
-      break;
-    case 'equalInput':
-      result = compute();
-      if (result != 'error') {
-        updateLowerText('calculate');
-        clearOnNextNumber = true;
-        calcLastAction = true;
-        if (Number(result)) {
-          updateUpperText('operatorResult')
-          operands[0] = result
-        }
-
-        break;
-      }
+const calculate = function() {
+  result = compute();
+  if (result != 'error') {
+    updateLowerText('calculate');
+    clearOnNextNumber = true;
+    calcLastAction = true;
+    if (Number(result)) {
+      updateUpperText('operatorResult')
+      operands[0] = result
+    }
   }
 }
+
+
 const compute = function() {
   switch (operatorString) {
     case '+':
