@@ -10,8 +10,9 @@ var activeOperand = 0;
 var lastButton
 var addDot = '';
 var operator
-var operatorString =''
+var operatorString = ''
 var clearOnNextNumber = false
+var calcLastAction = false;
 
 
 for (let i = 0; i < numButtons.length; i++) {
@@ -48,33 +49,49 @@ for (let i = 0; i < miscButtons.length; i++) {
       case ',':
         comma();
         break;
+      case '=':
+        calculate('equalInput');
+        break;
     }
   })
 }
 
 
 const numberInput = function(input) {
-  if(clearOnNextNumber => clear());
+  calcLastAction = false;
+  if (clearOnNextNumber) {
+    clear();
+  };
   if (operands[activeOperand] == null) {
-  operands[activeOperand] = parseFloat(input);
-} else{
-  operands[activeOperand] = parseFloat(operands[activeOperand].toString() + addDot + input.toString());
-  addDot = "";
-}
-updateLowerText('numberInput')
+    operands[activeOperand] = parseFloat(input);
+  } else {
+    operands[activeOperand] = parseFloat(operands[activeOperand].toString() + addDot + input.toString());
+    addDot = "";
+  }
+  updateLowerText('numberInput')
 }
 
-const operatorInput = function(input){
+const operatorInput = function(input) {
   clearOnNextNumber = false;
-  if(activeOperand ==0){
-  activeOperand = 1;
-  operatorString = input;
-  updateLowerText('operatorInput');
-  updateUpperText('operatorInput');
-} else if(activeOperand==1){
-  calculate('operatorInput')
-  operatorString = input;
-}
+  if (calcLastAction) {
+    activeOperand = 1;
+    operands[1] = null;
+    calcLastAction = false;
+    operatorString = input;
+    updateUpperText('operatorInput');
+    updateLowerText(); //will clear lower text
+  } else {
+    if (activeOperand == 0) {
+      activeOperand = 1;
+      operatorString = input;
+      updateLowerText('operatorInput');
+      updateUpperText('operatorInput');
+    } else if (activeOperand == 1) {
+      calculate('operatorInput')
+      operatorString = input;
+    }
+  }
+
 
 }
 
@@ -94,16 +111,18 @@ const updateLowerText = function(mode) {
       lowerTextElement.innerHTML = dotToComma(operands[activeOperand].toString());
       break;
     case 'comma':
-      lowerTextElement.innerHTML = operands[activeOperand] +',';
+      lowerTextElement.innerHTML = operands[activeOperand] + ',';
       break;
     case 'calculate':
-      lowerTextElement.innerHTML = dotToComma(result.toString())
+      lowerTextElement.innerHTML = dotToComma(checkLength(result.toString(),'sig'));
+      break;
     default:
+      lowerTextElement.innerHTML = "";
       break;
   }
 }
 
-const updateUpperText = function(mode){
+const updateUpperText = function(mode) {
   switch (mode) {
     case 'operatorInput':
       upperTextElement.innerHTML = operands[0].toString() + operatorString;
@@ -125,7 +144,7 @@ const clear = function() {
   activeOperand = 0;
   updateLowerText('clear');
   updateUpperText('clear');
-  operator ='';
+  operator = '';
   addDot = '';
 }
 
@@ -143,38 +162,58 @@ const comma = function() {
   return
 }
 
-const dotToComma = function(operandString){
+const dotToComma = function(operandString) {
   return operandString.replace(/\./g, ',')
 }
 
 // calculation function
-const calculate = function(mode){
-  switch(mode){
+const calculate = function(mode) {
+  switch (mode) {
     case 'operatorInput':
-        result = compute();
-        updateUpperText('operatorResult')
+      result = compute();
+      updateUpperText('operatorResult')
+      if (Number(result)) {
         operands[0] = result
+      }
+
       break;
     case 'equalInput':
+      result = compute()
+      updateUpperText('operatorResult')
+      if (Number(result)) {
+        operands[0] = result
+      }
       break;
   }
 
   updateLowerText('calculate');
   clearOnNextNumber = true;
+  calcLastAction = true;
+
 }
 
-const compute = function(){
-  switch(operatorString){
+const compute = function() {
+  switch (operatorString) {
     case '+':
       return operands[0] + operands[1];
       break;
     case '-':
       return operands[0] - operands[1];
       break;
-    case '&times':
+    case '×':
       return operands[0] * operands[1];
       break;
-    case '&div':
+    case '÷':
       return operands[0] / operands[1];
+  }
+}
+
+const checkLength = function(input, mode) {
+  switch (mode) {
+    case 'sig':
+      return parseFloat(input).toPrecision(12);
+      break;
+    case 'short':
+      return input.slice(0, 11);
   }
 }
